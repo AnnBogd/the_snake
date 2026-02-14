@@ -133,3 +133,5 @@ dmypy.json
 .deployment
 
 .idea
+
+pre_code.py
