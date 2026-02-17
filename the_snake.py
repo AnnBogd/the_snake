@@ -48,11 +48,12 @@ clock = pg.time.Clock()
 class GameObject:
     """Базовый класс, от которого наследуются игровые объекты."""
 
-    def __init__(self, body_color=BOARD_BACKGROUND_COLOR):
+    def __init__(self, body_color=BOARD_BACKGROUND_COLOR,
+                 border_color=BORDER_COLOR):
         """Инициализировать базовые атрибуты класса - цвет и позиция."""
         self.position = SCREEN_CENTER
         self.body_color = body_color
-        self.border_color = BORDER_COLOR
+        self.border_color = border_color
 
     def draw(self):
         """Отрисовать объекты на игровом поле.
@@ -62,11 +63,11 @@ class GameObject:
         raise NotImplementedError(
             'Необходимо переопределить метод в дочернем классе')
 
-    def draw_cell(self, position, body_color, border_color):
+    def draw_cell(self, position):
         """Отрисовать одну клетку."""
         rect = pg.Rect(position, (GRID_SIZE, GRID_SIZE))
-        pg.draw.rect(screen, body_color, rect)
-        pg.draw.rect(screen, border_color, rect, 1)
+        pg.draw.rect(screen, self.body_color, rect)
+        pg.draw.rect(screen, self.border_color, rect, 1)
 
 
 class Snake(GameObject):
@@ -102,7 +103,7 @@ class Snake(GameObject):
     def draw(self):
         """Отрисовать змейку."""
         for position in self.positions:
-            self.draw_cell(position, self.body_color, self.border_color)
+            self.draw_cell(position)
 
     def get_head_position(self):
         """Вернуть позицию головы змейки."""
@@ -119,15 +120,15 @@ class Snake(GameObject):
 class Apple(GameObject):
     """Класс, который описывает яблоко и действия с ним"""
 
-    def __init__(self, body_color=APPLE_COLOR, occupied_spots=SCREEN_CENTER):
+    def __init__(self, body_color=APPLE_COLOR,
+                 occupied_spots=(SCREEN_CENTER, )):
         """Инициализировать атрибуты объекта яблоко.
 
         Цвет по умолчанию красный.
         Позиция устанавливается методом randomize_position.
         """
         super().__init__(body_color)
-        self.occupied_spots = occupied_spots
-        self.randomize_position(self.occupied_spots)
+        self.randomize_position(occupied_spots)
 
     def randomize_position(self, occupied_spots):
         """Задать координаты для появления яблока.
@@ -143,7 +144,7 @@ class Apple(GameObject):
 
     def draw(self):
         """Отрисовать объект яблоко."""
-        self.draw_cell(self.position, self.body_color, self.border_color)
+        self.draw_cell(self.position)
 
 
 def handle_keys(game_object):
