@@ -73,12 +73,12 @@ class GameObject:
 class Snake(GameObject):
     """Класс, который описывает змейку и её поведение"""
 
-    def __init__(self, body_color=SNAKE_COLOR):
+    def __init__(self, body_color=SNAKE_COLOR, border_color=BORDER_COLOR):
         """Инициализировать атрибуты объекта змейка.
 
         Цвет по умолчанию зеленый, позиция - в центре экрана.
         """
-        super().__init__(body_color)
+        super().__init__(body_color, border_color)
         self.length = 1
         self.positions = [self.position]
         self.direction = RIGHT
@@ -120,14 +120,14 @@ class Snake(GameObject):
 class Apple(GameObject):
     """Класс, который описывает яблоко и действия с ним"""
 
-    def __init__(self, body_color=APPLE_COLOR,
+    def __init__(self, body_color=APPLE_COLOR, border_color=BORDER_COLOR,
                  occupied_spots=(SCREEN_CENTER, )):
         """Инициализировать атрибуты объекта яблоко.
 
         Цвет по умолчанию красный.
         Позиция устанавливается методом randomize_position.
         """
-        super().__init__(body_color)
+        super().__init__(body_color, border_color)
         self.randomize_position(occupied_spots)
 
     def randomize_position(self, occupied_spots):
